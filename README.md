@@ -17,3 +17,7 @@
 1. Extend `SelectionBox2D.cs` and override methods accordingly
 1. Attach new script to a GameObject in your scene
 1. attach a line renderer with the same settings as `SelectionBox2D.prefab`
+
+Map the selection box to a mouse button using the `SelectionBox2D` script.
+
+![alt text](Screenshots/SelectionBox2DCS.png)
