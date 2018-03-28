@@ -6,7 +6,7 @@
 
 ## Usage
 
-**Download the latest release and import it into your project**
+**[Download the latest release](https://github.com/mdmnk/SelectionBox2D/releases/latest) and import it into your project**
 
 1. Drag the `SelectionBox2D.prefab` into your scene
 1. Choose a mouse button to map the box selector to
