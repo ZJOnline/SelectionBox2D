@@ -5,9 +5,8 @@ public class SelectionBox2D : MonoBehaviour
     public string sortingLayer = "UI";
     public MouseButton mouseSelectionButton;
     public enum MouseButton { Left, Right, Middle };
-    Vector3 clickStart;
-    Vector3 clickEnd;
-    Rect selectedRect;
+    Vector2 clickStart;
+    Vector2 clickEnd;
     LineRenderer lineRenderer;
     bool mouseDragging;
     bool mousePressed;
@@ -18,9 +17,14 @@ public class SelectionBox2D : MonoBehaviour
         get { return (int) mouseSelectionButton; }
     }
 
-    public Rect SelectedRect
+    Vector2 ClickEnd
     {
-        get { return selectedRect; }
+        get { return clickEnd; }
+    }
+
+    Vector2 ClickStart
+    {
+        get { return clickStart; }
     }
 
     protected Vector3 MouseWorldPosition
@@ -59,39 +63,33 @@ public class SelectionBox2D : MonoBehaviour
         lineRenderer = gameObject.GetComponent<LineRenderer>();
         lineRenderer.sortingOrder = 4;
         lineRenderer.sortingLayerName = sortingLayer;
-        lineRenderer.SetPositions(new Vector3[5] {
-            Vector3.zero, Vector3.zero, Vector3.zero, Vector3.zero, Vector3.zero
-        });
-        selectedRect = Rect.zero;
     }
 
-    void Update()
+    protected void Update()
     {
         if (MouseClicked && !MouseDragging) StartDragging();
         if (MouseDragging) HandleDragging();
         if (!MouseDown && MouseDragging) StopDragging();
     }
 
-    protected void StartDragging()
+    protected virtual void StartDragging()
     {
-        selectedRect.x = MouseWorldPosition.x;
-        selectedRect.y = MouseWorldPosition.y;
+        clickStart = MouseWorldPosition;
         mouseDragging = true;
         lineRenderer.enabled = true;
-        lineRenderer.SetPosition(0, MouseWorldPosition);
-        lineRenderer.SetPosition(4, MouseWorldPosition);
+        lineRenderer.SetPosition(0, ClickStart);
+        lineRenderer.SetPosition(4, ClickStart);
     }
 
-    protected void HandleDragging()
+    protected virtual void HandleDragging()
     {
-        selectedRect.width = MouseWorldPosition.x;
-        selectedRect.height = MouseWorldPosition.y;
-        lineRenderer.SetPosition(1, new Vector3(SelectedRect.width, SelectedRect.y, 0));
-        lineRenderer.SetPosition(2, new Vector3(SelectedRect.width, SelectedRect.height, 0));
-        lineRenderer.SetPosition(3, new Vector3(SelectedRect.x, SelectedRect.height, 0));
+        clickEnd = MouseWorldPosition;
+        lineRenderer.SetPosition(1, new Vector3(ClickEnd.x, ClickStart.y, 0));
+        lineRenderer.SetPosition(2, new Vector3(ClickEnd.x, ClickEnd.y, 0));
+        lineRenderer.SetPosition(3, new Vector3(ClickStart.x, ClickEnd.y, 0));
     }
 
-    protected void StopDragging()
+    protected virtual void StopDragging()
     {
         mouseDragging = false;
         lineRenderer.enabled = false;
