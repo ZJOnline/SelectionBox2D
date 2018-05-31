@@ -78,15 +78,16 @@ public class SelectionBox2D : MonoBehaviour
         mouseDragging = true;
         lineRenderer.enabled = true;
         lineRenderer.SetPosition(0, ClickStart);
-        lineRenderer.SetPosition(4, ClickStart);
     }
 
     protected virtual void HandleDragging()
     {
         clickEnd = MouseWorldPosition;
+        float inc = (ClickStart.y > clickEnd.y) ? 0.5f : -0.5f;
         lineRenderer.SetPosition(1, new Vector3(ClickEnd.x, ClickStart.y, 0));
-        lineRenderer.SetPosition(2, new Vector3(ClickEnd.x, ClickEnd.y, 0));
-        lineRenderer.SetPosition(3, new Vector3(ClickStart.x, ClickEnd.y, 0));
+        lineRenderer.SetPosition(2, new Vector3(ClickEnd.x, ClickEnd.y - inc, 0));
+        lineRenderer.SetPosition(3, new Vector3(ClickStart.x, ClickEnd.y - inc, 0));
+        lineRenderer.SetPosition(4, new Vector3(ClickStart.x, ClickStart.y + inc, 0));
     }
 
     protected virtual void StopDragging()
